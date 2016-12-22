@@ -1,72 +1,59 @@
 import React,{Component } from 'react';
-import Comment from "../presentation/Comment";
+import {CreateComment,Comment} from "../presentation";
 import styles from "./styles";
 import superagent from "superagent";
+import  {APIManager} from "../../utils";
 
 class Comments extends Component {
   constructor(){
    super()
        this.state = {
-         comment:{
-           username:"",
-           body:"",
-           timestamp:""
 
-         },
          list:[]
 
        }
   }
-  submitComment (){
-    console.log("submit comment"+JSON.stringify(this.state.comment))
-    let updatedList=Object.assign([],this.state.list);
-    updatedList.push(this.state.comment)
+  submitComment (comment){
+
+    console.log("function worked from view",comment)
+
+  let updatedComment = Object.assign({},comment)
+APIManager.post("/api/comment",comment,(err,response)=>{
+  if(err){
+    alert("ERROR "+err.message)
+    return
+  }
+  else{
+    console.log("comment CREATED "+JSON.stringify(response.result));
+let updatedList = Object.assign([],this.state.list)
+updatedList.push(response.result)
     this.setState({
       list:updatedList
     })
-  }
-  updateTimestamp(event){
-    let updatedComment = Object.assign({},this.state.comment)
-    updatedComment["timestamp"]=event.target.value;
-    this.setState({
-      comment:updatedComment
-    })
+    console.log("updated result ",this.state.list)
+
+
 
   }
-  updateUsername(event){
-  //console.log("ankur",event.target.value);
 
-  let updatedComment = Object.assign({},this.state.comment);
-  updatedComment["username"] = event.target.value;
-  this.setState({
-    comment:updatedComment
-  })
+})
 
   }
-  updateComment(event){
-    let updatedComment = Object.assign({},this.state.comment)
-    updatedComment["body"] = event.target.value
-    this.setState({
-      comment:updatedComment
-    })
-  //  console.log("update comment "+event.target.value)
-  }
+
+
+  
   componentDidMount(){
-  superagent
-  .get("/api/comment")
-  .query(null)
-  .set("Accept","application/json")
-  .end((err,response)=>{
-    if(err){
-      alert("Eroor"+err)
-      return
-    }
-    //console.log(JSON.stringify(response.body))
-    let results = response.body.results;
+  APIManager.get("/api/comment",null,(err,response)=>{
+  if(err){
+    alert("ERROR ",err.message)
+    return
+  }
+  else{
     this.setState({
-      list:results
+      list:response.results
     })
-  //  console.log("updated list ",this.state.list);
+  }
+
   })
   }
 
@@ -87,11 +74,9 @@ return(
        <ul style={styles.comment.commentList}>
         {commentList}
 </ul>
-<input onChange={this.updateUsername.bind(this)} className="form-control" type="text" placeholder="Username" /><br />
-<input onChange={this.updateComment.bind(this)} className="form-control" type="text" placeholder="comment" /><br />
-<input onChange={this.updateTimestamp.bind(this)} className="form-control" type="text" placeholder="date"/><br />
-<button onClick={this.submitComment.bind(this)} className="btn btn-info">Submit comment </button>
 
+
+<CreateComment onCreate={this.submitComment.bind(this)}/>
        </div>
   </div>
 

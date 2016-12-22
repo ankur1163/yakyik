@@ -1,14 +1,15 @@
 import React,{Component} from "react";
-import Zone from "../presentation/Zone";
+//import Zone from "../presentation/Zone";
 import superagent from 'superagent';
+import  {APIManager} from "../../utils";
+import  {CreateZone,Zone} from "../presentation";
 
 class Zones extends Component{
   constructor(){
       super()
       this.state={
         zone:{
-          name:"",
-          zipCodes:""
+
           },
       list:[]
           }
@@ -16,21 +17,17 @@ class Zones extends Component{
   }
 //ank
 componentDidMount(){
-superagent
-.get("/api/zone")
-.query(null)
-.set("Accept","application/json")
-.end((err,response)=>{
-  if(err){
-    alert("Eroor"+err)
-    return
-  }
-  //console.log(JSON.stringify(response.body))
-  let results = response.body.results;
+APIManager.get("/api/zone",null,(err,response)=>{
+if(err){
+  alert("ERROR ",err.message)
+  return
+}
+else{
   this.setState({
-    list:results
+    list:response.results
   })
-  //console.log("updated list ",this.state.list);
+}
+
 })
 }
 updateZone(event){
@@ -42,13 +39,33 @@ this.setState({
 
 }
 
-addZone(){
-//  console.log("Add zone: "+JSON.stringify(this.state.zone))
-  let updatedList = Object.assign([],this.state.list);
-  updatedList.push(this.state.zone);
-  this.setState({
-    list:updatedList
-  })
+addZone(zone){
+    let updatedZone = Object.assign({},zone)
+    console.log("pehla updated zone ",updatedZone)
+    updatedZone['zipCodes'] = updatedZone.zipCode.split(",")
+    console.log("updated zone ",updatedZone);
+APIManager.post("/api/zone",updatedZone,(err,response)=>{
+  if(err){
+    alert("ERROR "+err.message)
+    console.log(err)
+    return
+  }
+  else{
+    console.log("ZONE CREATED "+JSON.stringify(response.result));
+let updatedList = Object.assign([],this.state.list)
+updatedList.push(response.result)
+    this.setState({
+      list:updatedList
+    })
+    console.log("updated result ",this.state.list)
+
+
+
+  }
+
+})
+
+
 }
   render(){
     const listItems = this.state.list.map((zone,i)=>{
@@ -65,10 +82,8 @@ addZone(){
        <ol>
            {listItems};
        </ol>
-       <input id="name" onChange={this.updateZone.bind(this)} className="form-control" type="text" placeholder="Name" /><br />
-       <input id="zipCodes" onChange={this.updateZone.bind(this)} className="form-control" type="text" placeholder="Zip Code" /><br />
-        <button onClick={this.addZone.bind(this)} className="btn btn-danger">Add zone</button>
 
+         <CreateZone onCreate={this.addZone.bind(this)}/>
 
        </div>
 
