@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var api = require("./routes/api.js");
 var mongoose = require("mongoose");
-var dbUrl = "mongodb://localhost/yak-yik";
+var dbUrl = "mongodb://ankur1163:lightbulb1@ds013946.mlab.com:13946/ank1163";
 mongoose.connect(dbUrl,function(err,res){
 
 

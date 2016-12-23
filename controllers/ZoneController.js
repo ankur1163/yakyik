@@ -47,7 +47,8 @@ callback(err,null)
 //create controller started
 create:function(params,callback){
 console.log(params);
-  var zips = params['zipCodes'];
+  var zips = params['zipCode'];
+  console.log(zips)
   var zip = zips.split(",");
   var newZips =[];
   zip.forEach(function(zipcodes){
