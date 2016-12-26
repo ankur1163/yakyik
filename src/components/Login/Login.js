@@ -18,7 +18,7 @@ export class Login extends React.Component {
     console.log(auth);
     return (
       <div>
-        <h2>Login</h2>
+        <h2>Login here</h2>
         
           <button onClick={auth.login.bind(this)}>Login</button>
         

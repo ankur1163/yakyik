@@ -6,7 +6,7 @@ export default class AuthService {
     // Configure Auth0
     this.lock = new Auth0Lock(clientId, domain, {
       auth: {
-        redirectUrl: 'https://yakyik-restlessankur.c9users.io/login',
+        redirectUrl: 'https://yakyik-experiment-restlessankur.c9users.io/Home',
         responseType: 'token'
       }
     })
@@ -20,7 +20,7 @@ export default class AuthService {
     // Saves the user token
     this.setToken(authResult.idToken)
     // navigate to the home route
-    hashHistory.replace('/Ankur')
+    browserHistory.replace('/Home')
   }
 
   login() {
@@ -35,7 +35,8 @@ export default class AuthService {
 
   setToken(idToken) {
     // Saves user token to local storage
-    localStorage.setItem('id_token', idToken)
+    localStorage.setItem('id_token', idToken);
+    console.log("this is token ",idToken)
   }
 
   getToken() {

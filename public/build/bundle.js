@@ -26855,32 +26855,36 @@
 	
 	var _AuthService2 = _interopRequireDefault(_AuthService);
 	
-	var _Home = __webpack_require__(401);
+	var _Container = __webpack_require__(401);
+	
+	var _Container2 = _interopRequireDefault(_Container);
+	
+	var _Home = __webpack_require__(402);
 	
 	var _Home2 = _interopRequireDefault(_Home);
 	
-	var _Login = __webpack_require__(402);
+	var _Login = __webpack_require__(403);
 	
 	var _Login2 = _interopRequireDefault(_Login);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	//import Container from './Container'
-	var auth = new _AuthService2.default("F4hEbL9ytVEJQQauTNSIau1nNlEhvP3b", "app1163.auth0.com");
+	var auth = new _AuthService2.default("jtoXlY3T0n9B3ttSasyN2NiY84NpXwsg", "app1163.auth0.com");
 	
 	// onEnter callback to validate authentication in private routes
 	var requireAuth = function requireAuth(nextState, replace) {
+	
 	  if (!auth.loggedIn()) {
-	    replace({ pathname: '/login' });
+	    replace({ pathname: '/Login' });
 	  }
 	};
 	
 	var makeMainRoutes = exports.makeMainRoutes = function makeMainRoutes() {
 	  return _react2.default.createElement(
 	    _reactRouter.Route,
-	    { path: '/', component: _Home2.default, auth: auth },
-	    _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/home' }),
-	    _react2.default.createElement(_reactRouter.Route, { path: 'home', component: _Home2.default, onEnter: requireAuth }),
+	    { path: '/', component: _Container2.default, auth: auth },
+	    _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/Home' }),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'Home', component: _Home2.default, onEnter: requireAuth }),
 	    _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _Login2.default })
 	  );
 	};
@@ -26916,7 +26920,7 @@
 	    // Configure Auth0
 	    this.lock = new _auth0Lock2.default(clientId, domain, {
 	      auth: {
-	        redirectUrl: 'https://yakyik-restlessankur.c9users.io/login',
+	        redirectUrl: 'https://yakyik-experiment-restlessankur.c9users.io/Home',
 	        responseType: 'token'
 	      }
 	    });
@@ -26932,7 +26936,7 @@
 	      // Saves the user token
 	      this.setToken(authResult.idToken);
 	      // navigate to the home route
-	      _reactRouter.hashHistory.replace('/Ankur');
+	      _reactRouter.browserHistory.replace('/Home');
 	    }
 	  }, {
 	    key: 'login',
@@ -26951,6 +26955,7 @@
 	    value: function setToken(idToken) {
 	      // Saves user token to local storage
 	      localStorage.setItem('id_token', idToken);
+	      console.log("this is token ", idToken);
 	    }
 	  }, {
 	    key: 'getToken',
@@ -54331,6 +54336,71 @@
 /* 401 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Container = undefined;
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Container = exports.Container = function (_React$Component) {
+	  _inherits(Container, _React$Component);
+	
+	  function Container() {
+	    _classCallCheck(this, Container);
+	
+	    return _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).apply(this, arguments));
+	  }
+	
+	  _createClass(Container, [{
+	    key: "render",
+	    value: function render() {
+	      var children = null;
+	      if (this.props.children) {
+	        children = _react2.default.cloneElement(this.props.children, {
+	          auth: this.props.route.auth //sends auth instance to children
+	        });
+	      }
+	
+	      return _react2.default.createElement(
+	        "div",
+	        null,
+	        _react2.default.createElement(
+	          "h2",
+	          null,
+	          _react2.default.createElement("img", { src: "https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg" })
+	        ),
+	        children
+	      );
+	    }
+	  }]);
+	
+	  return Container;
+	}(_react2.default.Component);
+	
+	Container.contextTypes = {
+	  router: _react.PropTypes.object
+	};
+	exports.default = Container;
+
+/***/ },
+/* 402 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -54423,7 +54493,7 @@
 	exports.default = Home;
 
 /***/ },
-/* 402 */
+/* 403 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -54472,7 +54542,7 @@
 	        _react2.default.createElement(
 	          'h2',
 	          null,
-	          'Login'
+	          'Login here'
 	        ),
 	        _react2.default.createElement(
 	          'button',
