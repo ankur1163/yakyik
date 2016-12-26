@@ -3,6 +3,7 @@ import { browserHistory,hashHistory } from 'react-router'
 
 export default class AuthService {
   constructor(clientId, domain) {
+    //auth0 code
     // Configure Auth0
     this.lock = new Auth0Lock(clientId, domain, {
       auth: {
