@@ -1,4 +1,5 @@
 import React, { PropTypes as T } from 'react'
+import homeone from '../layout/Home1.js';
 
 import AuthService from '../../utils/AuthService'
 
@@ -37,6 +38,7 @@ export class Home extends React.Component {
         <h2>Home</h2>
         <p>Welcome {profile.name}!</p>
         <button onClick={this.logout.bind(this)}>Logout</button>
+        <homeone />
       </div>
     )
   }
